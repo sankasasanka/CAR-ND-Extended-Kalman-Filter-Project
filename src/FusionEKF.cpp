@@ -118,8 +118,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
  
   
-  float noise_ax = 12;
-  float noise_ay = 12;
+  float noise_ax = 9;
+  float noise_ay = 9;
  
   
   //cout <<measurement_pack.timestamp_<<"\n"<<ekf_.previous_timestamp_<<"\n";
