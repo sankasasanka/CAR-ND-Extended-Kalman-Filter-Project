@@ -42,9 +42,9 @@ FusionEKF::FusionEKF() {
   
   ekf_.P_ = MatrixXd(4, 4);
   ekf_.P_<<	1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1000, 0,
-  		0, 0, 1000, 0;
+            0, 1, 0, 0,
+            0, 0, 1000, 0,
+            0, 0, 0, 1000;
   
 }
 
@@ -81,7 +81,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   	  
       input={measurement_pack.raw_measurements_};
       
-      float phi = input[1];
+      double phi = input[1];
       // Normalize phi to [-pi, pi]
       while (phi > M_PI)  phi -= 2.0 * M_PI;
       while (phi < -M_PI) phi += 2.0 * M_PI;
@@ -96,6 +96,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       ekf_.x_ <<input[0],input[1],0,0;
 
     }
+   
 	
     // done initializing, no need to predict or update
     is_initialized_ = true;
@@ -117,13 +118,13 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
  
   
-  float noise_ax = 9;
-  float noise_ay = 9;
+  float noise_ax = 12;
+  float noise_ay = 12;
  
   
   //cout <<measurement_pack.timestamp_<<"\n"<<ekf_.previous_timestamp_<<"\n";
   
-  float dt = fabs(measurement_pack.timestamp_ - ekf_.previous_timestamp_) / 1000000.0;
+  double dt = (measurement_pack.timestamp_ - ekf_.previous_timestamp_) / 1000000.0;
   //cout << "Time Elapsed:"<<dt<<"\n";
   
   ekf_.F_ = MatrixXd(4, 4);
@@ -133,9 +134,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
            0,0,0,1;
 
   // TODO: YOUR CODE HERE
-  float dt_2 = dt * dt;
-  float dt_3 = dt_2 * dt/2;
-  float dt_4 = dt_3 * dt/4;
+  double dt_2 = dt * dt;
+  double dt_3 = dt_2 * dt/2;
+  double dt_4 = dt_3 * dt/4;
 
   // set the process covariance matrix Q
   ekf_.Q_ = MatrixXd(4, 4);
